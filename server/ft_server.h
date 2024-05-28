@@ -13,6 +13,5 @@ typedef struct  s_msg
     int         seg_no;
 }               t_msg;
 
-void            sigusr1_handler(int signo);
-void            sigusr2_handler(int signo);
-unsigned char    to_char(char *binary);
+void            sigusr_handler(int signo);
+unsigned char   to_char(char *binary);

@@ -41,16 +41,15 @@ void    store_binary()
     }
 }
 
-void    sigusr1_handler(int signo)
+void    sigusr_handler(int signo)
 {
-    msg.binary[msg.bin_len++] = '0';
-    if (msg.bin_len == CODE_SIZE)
-        store_binary();
-}
+    char    ch;
 
-void    sigusr2_handler(int signo)
-{
-    msg.binary[msg.bin_len++] = '1';
+    if (signo == SIGUSR1)
+        ch = '0';
+    else
+        ch = '1';
+    msg.binary[msg.bin_len++] = ch;
     if (msg.bin_len == CODE_SIZE)
         store_binary();
 }
