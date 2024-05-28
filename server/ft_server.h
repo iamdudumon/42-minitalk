@@ -2,7 +2,6 @@
 #include <signal.h>
 #include <unistd.h>
 
-# define BUFFER_SIZE 1024
 # define CODE_SIZE  8
 
 typedef struct  s_msg
@@ -11,6 +10,7 @@ typedef struct  s_msg
     char        buf[BUFFER_SIZE];
     int         bin_len;
     int         buf_len;
+    int         seg_no;
 }               t_msg;
 
 void            sigusr1_handler(int signo);
