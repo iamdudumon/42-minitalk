@@ -8,7 +8,7 @@ void    send_signal(int pid, char *binary)
             kill(pid, SIGUSR1);
         else
             kill(pid, SIGUSR2);
-        usleep(500);
+        usleep(750);
         binary++;
     }
 }
