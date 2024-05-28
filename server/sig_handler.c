@@ -20,7 +20,7 @@ void    store_binary()
     msg.buf[msg.buf_len++] = to_char(msg.binary);
     msg.bin_len = 0;
     ft_memset(msg.binary, 0, CODE_SIZE + 1);
-    if (msg.buf[msg.buf_len] == '\0')
+    if (msg.buf[msg.buf_len - 1] == '\0')
     {
         ft_printf("cleint: %s\n", msg.buf);
         ft_memset(msg.buf, 0, BUFFER_SIZE);
