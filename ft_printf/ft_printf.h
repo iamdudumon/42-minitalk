@@ -13,10 +13,8 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# define BUFFER_SIZE 42
+# define BUFFER_SIZE 1024
 
-# include <stdlib.h>
-# include <unistd.h>
 # include <stdarg.h>
 # include "../libft/libft.h"
 

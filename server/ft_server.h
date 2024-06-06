@@ -1,6 +1,5 @@
 #include "../ft_printf/ft_printf.h"
 #include <signal.h>
-#include <unistd.h>
 
 # define CODE_SIZE  8
 
