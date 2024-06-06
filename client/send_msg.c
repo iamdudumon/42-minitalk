@@ -5,36 +5,28 @@ void send_ack(int pid)
     kill(pid, SIGUSR1);
 }
 
-void    send_signal(int pid, char *binary)
+void    send_signal(int pid, char ch)
 {
-    while (*binary)
+    int bit;
+
+    bit = 0;
+    while (bit < CODE_SIZE)
     {
-        if (*binary == '0')
+        if ((ch & (1 << bit)) == 0)
             kill(pid, SIGUSR1);
         else
             kill(pid, SIGUSR2);
-        usleep(500);
-        binary++;
+        bit++;
+        usleep(100);
     }
-}
-
-void    error_handler()
-{
-
 }
 
 void    send_msg(int pid, char *msg)
 {
-    char    *binary;
-    
     while (*msg != '\0')
     {
-        binary = to_binary(*msg);
-        if (!binary)
-            error_handler();
-        send_signal(pid, binary);
-        free(binary);
+        send_signal(pid, *msg);
         msg++;
     }
-    send_signal(pid, "00000000");
+    send_signal(pid, '\0');
 }
