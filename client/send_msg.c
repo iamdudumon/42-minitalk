@@ -1,5 +1,10 @@
 #include "ft_client.h"
 
+void send_ack(int pid)
+{
+    kill(pid, SIGUSR1);
+}
+
 void    send_signal(int pid, char *binary)
 {
     while (*binary)
@@ -8,7 +13,7 @@ void    send_signal(int pid, char *binary)
             kill(pid, SIGUSR1);
         else
             kill(pid, SIGUSR2);
-        usleep(750);
+        usleep(500);
         binary++;
     }
 }
@@ -17,7 +22,6 @@ void    error_handler()
 {
 
 }
-
 
 void    send_msg(int pid, char *msg)
 {
