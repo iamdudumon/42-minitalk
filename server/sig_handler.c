@@ -14,42 +14,29 @@
 
 extern t_msg    msg;
 
-void    flush_buffer()
+void    store_binary(char ch)
 {
-    if (msg.seg_no == 0)
-        ft_printf("client: ");
-    ft_printf("%s\n", msg.buf);
-    ft_memset(msg.buf, 0, BUFFER_SIZE);
-    msg.buf_len = 0;
-    msg.seg_no++;
-}
-
-void    store_binary()
-{
-    msg.binary[CODE_SIZE] = 0;
-    msg.buf[msg.buf_len++] = to_char(msg.binary);
-    ft_memset(msg.binary, 0, CODE_SIZE + 1);
-    msg.bin_len = 0;
-    if (msg.buf_len == BUFFER_SIZE)
-        flush_buffer();
-    if (msg.buf[msg.buf_len - 1] == '\0')
+    msg.buf[msg.len++] = ch;
+    if (msg.buf[msg.len - 1] == '\0')
     {
         ft_printf("client: %s\n", msg.buf);
-        ft_memset(msg.buf, 0, BUFFER_SIZE);
-        msg.buf_len = 0;
-        msg.seg_no = 0;
+        ft_memset(msg.buf, 0, sizeof(t_msg));
     }
 }
 
 void    sigusr_handler(int signo)
 {
-    char    ch;
+    static char ch;
+    static int  len;
 
-    if (signo == SIGUSR1)
-        ch = '0';
-    else
-        ch = '1';
-    msg.binary[msg.bin_len++] = ch;
-    if (msg.bin_len == CODE_SIZE)
-        store_binary();
+
+    if (signo == SIGUSR2)
+        ch |= (1 << len);
+    len++;
+    if (len == CODE_SIZE)
+    {
+        store_binary(ch);
+        ch = 0;
+        len = 0;
+    }
 }
