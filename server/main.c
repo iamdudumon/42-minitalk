@@ -4,7 +4,6 @@ t_msg   msg;
 
 int main()
 {
-    int i;
     int pid;
 
     pid = getpid();
