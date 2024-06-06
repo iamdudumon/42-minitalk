@@ -29,7 +29,6 @@ void    sigusr_handler(int signo)
     static char ch;
     static int  len;
 
-
     if (signo == SIGUSR2)
         ch |= (1 << len);
     len++;
