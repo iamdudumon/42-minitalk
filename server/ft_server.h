@@ -11,4 +11,3 @@ typedef struct	s_msg
 }				t_msg;
 
 void			sigusr_handler(int signo);
-unsigned char	to_char(char *binary);
