@@ -3,11 +3,12 @@
 
 # define CODE_SIZE  8
 
-typedef struct  s_msg
+typedef struct	s_msg
 {
-    char        buf[BUFFER_SIZE];
-    size_t      len;
-}               t_msg;
+	char		buf[BUFFER_SIZE];
+	size_t		len;
+	int			clt_pid;
+}				t_msg;
 
-void            sigusr_handler(int signo);
-unsigned char   to_char(char *binary);
+void			sigusr_handler(int signo);
+unsigned char	to_char(char *binary);

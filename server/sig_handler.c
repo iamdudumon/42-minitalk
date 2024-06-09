@@ -5,37 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 17:47:17 by dukim             #+#    #+#             */
-/*   Updated: 2024/05/26 17:47:21 by dukim            ###   ########.fr       */
+/*   Created: 2024/06/09 16:10:23 by dukim             #+#    #+#             */
+/*   Updated: 2024/06/09 16:10:26 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_server.h"
 
-extern t_msg    msg;
+extern t_msg	msg;
 
-void    store_binary(char ch)
+void	store_binary(char ch)
 {
-    msg.buf[msg.len++] = ch;
-    if (msg.buf[msg.len - 1] == '\0')
-    {
-        ft_printf("client: %s\n", msg.buf);
-        ft_memset(msg.buf, 0, sizeof(t_msg));
-    }
+	msg.buf[msg.len++] = ch;
+	if (msg.buf[msg.len - 1] == '\0')
+	{
+		ft_printf("client: %s\n", msg.buf);
+		ft_memset(msg.buf, 0, sizeof(t_msg));
+	}
 }
 
-void    sigusr_handler(int signo)
+void	sigack_handler(int signo)
 {
-    static char ch;
-    static int  len;
 
-    if (signo == SIGUSR2)
-        ch |= (1 << len);
-    len++;
-    if (len == CODE_SIZE)
-    {
-        store_binary(ch);
-        ch = 0;
-        len = 0;
-    }
+}
+
+void	sigusr_handler(int signo)
+{
+	static char	ch;
+	static int	len;
+
+	if (signo == SIGUSR2)
+		ch |= (1 << len);
+	len++;
+	if (len == CODE_SIZE)
+	{
+		store_binary(ch);
+		ch = 0;
+		len = 0;
+	}
 }
