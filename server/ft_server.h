@@ -1,13 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_server.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/11 18:30:06 by dukim             #+#    #+#             */
+/*   Updated: 2024/06/11 18:30:08 by dukim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef FT_SERVER_H
+# define FT_SERVER_H
+# define CODE_SIZE  8
+
 #include "../ft_printf/ft_printf.h"
 #include <signal.h>
 
-# define CODE_SIZE  8
-
 typedef struct	s_msg
 {
-	char		buf[BUFFER_SIZE];
-	size_t		len;
-	int			clt_pid;
+	char				buf[BUFFER_SIZE];
+	int					len;
+	int					clt_pid;
+	struct sigaction	handler;
 }				t_msg;
 
-void			sigusr_handler(int signo);
+void	sigack_hadler(int signo, siginfo_t *info, void* context);
+void	init_msg(int clt_pid, void (*handler)(int, siginfo_t*, void*));
+
+#endif
