@@ -5,3 +5,4 @@
 
 void	send_msg(int pid, char *msg);
 void	send_ack(int pid, char *s_pid);
+void	ack_handler(int signo, siginfo_t *info, void* context);
