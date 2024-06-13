@@ -15,6 +15,21 @@
 
 extern t_msg	g_msg;
 
+void	ft_kill(int pid, int signo)
+{
+	g_msg.recevied = 0;
+	kill(pid, signo);
+	// if (kill(pid, signo) == -1)
+	// {
+	// 	ft_printf("SIUSR(%d) Error\n", signo);
+	// 	exit(1);
+	// }
+	usleep(100000);
+	if (!g_msg.recevied)
+		ft_kill(pid, signo);
+
+}
+
 void	store_binary(int signo)
 {
 	static char	ch;
@@ -38,17 +53,24 @@ void	store_binary(int signo)
 
 void	sigusr_controler(int signo, siginfo_t *info, void* context)
 {
+	g_msg.recevied = 1;
 	if (g_msg.clt_pid == info->si_pid)
 	{
 		store_binary(signo);
-		kill(info->si_pid, signo);
+		ft_kill(info->si_pid, signo);
 	}
 	else
-		kill(info->si_pid, SIGUSR2);
+	{
+		if (signo == SIGUSR1)
+			ft_kill(info->si_pid, SIGUSR2);
+		else
+			ft_kill(info->si_pid, SIGUSR1);
+	}
 }
 
 void	sigack_hadler(int signo, siginfo_t *info, void* context)
 {
+	g_msg.recevied = 1;
 	init_msg(info->si_pid, sigusr_controler);
-	kill(info->si_pid, SIGUSR1);
+	ft_kill(info->si_pid, SIGUSR1);
 }

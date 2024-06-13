@@ -22,6 +22,7 @@ typedef struct	s_msg
 	char				buf[BUFFER_SIZE];
 	int					len;
 	int					clt_pid;
+	int					recevied;
 	struct sigaction	handler;
 }				t_msg;
 
