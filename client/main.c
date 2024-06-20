@@ -6,21 +6,22 @@ t_data	g_data;
 int	main(int argc, char *argv[])
 {
 	int	pid;
-	struct sigaction	handler;
+	struct sigaction	sa;
 
 	if (argc != 3)
 	{
-		ft_printf("잘 못 된 인자입니다. bye bye\n");
+		write(1, "Wrong argument. bye bye\n", 25);
 		return (0);
 	}
 	ft_memset(&g_data, 0, sizeof(t_data));
-	handler.sa_flags = SA_SIGINFO;
-	handler.sa_sigaction = ack_handler;
-	sigaction(SIGUSR1, &handler, NULL);
-	sigaction(SIGUSR2, &handler, NULL);
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = ack_handler;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	pid = ft_atoi(argv[1]);
-	ft_printf("My pid is %d\n", getpid());
+	write(1, ft_strjoin("My pid is ", ft_itoa(getpid())), 11 + 7);
+	write(1, "\n", 1);
 	send_ack(pid, argv[1]);
 	send_msg(pid, argv[2]);
-	ft_printf("client측 송신 완료\n");
+	write(1, "client측 송신 완료\n", 25);
 }
