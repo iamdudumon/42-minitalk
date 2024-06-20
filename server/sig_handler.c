@@ -17,17 +17,11 @@ extern t_msg	g_msg;
 
 void	ft_kill(int pid, int signo)
 {
-	g_msg.recevied = 0;
-	kill(pid, signo);
-	// if (kill(pid, signo) == -1)
-	// {
-	// 	ft_printf("SIUSR(%d) Error\n", signo);
-	// 	exit(1);
-	// }
-	usleep(100000);
-	if (!g_msg.recevied)
-		ft_kill(pid, signo);
-
+	if (kill(pid, signo) == -1)
+	{
+		write(1, "SIUSR Error, Non-existend Pid\n", 31);
+		exit(1);
+	}
 }
 
 void	store_binary(int signo)
@@ -43,7 +37,7 @@ void	store_binary(int signo)
 		g_msg.buf[g_msg.len++] = ch;
 		if (g_msg.buf[g_msg.len - 1] == '\0')
 		{
-			ft_printf("client(%d): %s\n", g_msg.clt_pid, g_msg.buf);
+			write(1, ft_strjoin(g_msg.buf, "\n"), ft_strlen(g_msg.buf) + 1);
 			init_msg(0, sigack_hadler);
 		}
 		ch = 0;
@@ -53,7 +47,6 @@ void	store_binary(int signo)
 
 void	sigusr_controler(int signo, siginfo_t *info, void* context)
 {
-	g_msg.recevied = 1;
 	if (g_msg.clt_pid == info->si_pid)
 	{
 		store_binary(signo);
@@ -70,7 +63,7 @@ void	sigusr_controler(int signo, siginfo_t *info, void* context)
 
 void	sigack_hadler(int signo, siginfo_t *info, void* context)
 {
-	g_msg.recevied = 1;
 	init_msg(info->si_pid, sigusr_controler);
+	write(1, ft_strjoin("[", ft_strjoin(ft_itoa(g_msg.clt_pid), " client] sended\n")), 1 + 7 + 17);
 	ft_kill(info->si_pid, SIGUSR1);
 }
