@@ -4,6 +4,15 @@
 
 extern t_data	g_data;
 
+void	ft_kill(int pid, int signo)
+{
+	if (kill(pid, signo) == -1)
+	{
+		write(1, "SIUSR Error, Non-existend Pid\n", 31);
+		exit(1);
+	}
+}
+
 void	ack_handler(int signo, siginfo_t *info, void* context)
 {
 	if (signo != g_data.signal)
@@ -15,7 +24,8 @@ void	ack_handler(int signo, siginfo_t *info, void* context)
 void	send_ack(int pid, char *s_pid)
 {
 	kill(pid, SIGUSR1);
-	pause();
+	// pause();
+	usleep(300);
 }
 
 int	send_character(int pid, char ch)
@@ -29,16 +39,15 @@ int	send_character(int pid, char ch)
 		if ((ch & (1 << bit)) == 0)
 		{
 			g_data.signal = SIGUSR1;
-			if (kill(pid, SIGUSR1) == -1)
-				ft_printf("SIGUSR1 Error\n");
+			ft_kill(pid, SIGUSR1);
 		}
 		else
 		{
 			g_data.signal = SIGUSR2;
-			if (kill(pid, SIGUSR2) == -1)
-				ft_printf("SIGUSR2 Error\n");
+			ft_kill(pid, SIGUSR2);
 		}
-		pause();
+		// pause();
+		usleep(300);
 	}
 	return (g_data.error);
 }
