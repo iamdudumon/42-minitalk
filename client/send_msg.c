@@ -21,11 +21,11 @@ void	ack_handler(int signo, siginfo_t *info, void* context)
 	}
 }
 
-void	send_ack(int pid, char *s_pid)
+void	send_ack(int pid)
 {
-	kill(pid, SIGUSR1);
-	// pause();
-	usleep(300);
+	ft_kill(pid, SIGUSR1);
+	pause();
+	// usleep(300);
 }
 
 int	send_character(int pid, char ch)
@@ -46,8 +46,8 @@ int	send_character(int pid, char ch)
 			g_data.signal = SIGUSR2;
 			ft_kill(pid, SIGUSR2);
 		}
-		// pause();
-		usleep(300);
+		pause();
+		// usleep(300);
 	}
 	return (g_data.error);
 }
