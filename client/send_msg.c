@@ -14,7 +14,7 @@
 
 t_msg	g_msg;
 
-void	ft_kill(int pid, int signo)
+static void	ft_kill(int pid, int signo)
 {
 	if (kill(pid, signo) == -1)
 	{

@@ -12,7 +12,7 @@
 
 #include "ft_client.h"
 
-void	start_sending_msg(int pid, char *msg)
+static void	start_sending_msg(int pid, char *msg)
 {
 	char	*pids;
 	char	*print_s1;

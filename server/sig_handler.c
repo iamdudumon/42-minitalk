@@ -15,7 +15,7 @@
 
 extern t_msg	g_msg;
 
-void	ft_kill(int pid, int signo)
+static void	ft_kill(int pid, int signo)
 {
 	if (kill(pid, signo) == -1)
 	{
@@ -24,7 +24,7 @@ void	ft_kill(int pid, int signo)
 	}
 }
 
-void	store_binary(int signo)
+static void	store_binary(int signo)
 {
 	static char	ch;
 	static int	len;
