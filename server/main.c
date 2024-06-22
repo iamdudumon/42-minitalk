@@ -14,20 +14,13 @@
 
 t_msg	g_msg;
 
-int	main()
+int	main(void)
 {
 	int	pid;
 
 	pid = getpid();
-	write(1, ft_strjoin("server pid: ", ft_itoa(pid)), 13 + 7);
-	write(1, "\n\n", 2);
+	print_srv_info(pid);
 	init_msg(0, sigack_hadler);
-	sigemptyset(&g_msg.sa.sa_mask);
 	while (1)
-	{
-		// if (!g_msg.clt_pid && !g_msg.recevied)
-		// 	ft_kill(g_msg.clt_pid, g_msg.sended);
-		// usleep(1000);
 		pause();
-	}
 }

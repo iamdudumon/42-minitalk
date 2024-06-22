@@ -1,20 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_client.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/22 15:54:49 by dukim             #+#    #+#             */
+/*   Updated: 2024/06/22 15:54:53 by dukim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_CLIENT_H
 # define FT_CLIENT_H
 
-#include <signal.h>
-#include "../libft/libft.h"
+# include <signal.h>
+# include "../libft/libft.h"
 
 # define CODE_SIZE  8
 
-typedef struct	s_data
+typedef struct s_msg
 {
-	int	signal;
-	int	error;
+	char	*msg;
+	int		len;
+}			t_msg;
 
-}				t_data;
-
-void	send_msg(int pid, char *msg);
-void	send_ack(int pid, char *s_pid);
-void	ack_handler(int signo, siginfo_t *info, void* context);
+void	send_ack(int pid, char *msg);
+void	ack_handler(int signo, siginfo_t *info, void *context);
 
 #endif
