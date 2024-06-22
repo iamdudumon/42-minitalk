@@ -13,21 +13,23 @@
 #ifndef FT_SERVER_H
 # define FT_SERVER_H
 
-#include <signal.h>
-#include "../libft/libft.h"
+# include <signal.h>
+# include "../libft/libft.h"
 
 # define CODE_SIZE  8
 # define BUFFER_SIZE 1024
 
-typedef struct	s_msg
+typedef struct s_msg
 {
 	char				buf[BUFFER_SIZE];
 	int					len;
 	int					clt_pid;
 	struct sigaction	sa;
-}				t_msg;
+}						t_msg;
 
-void	sigack_hadler(int signo, siginfo_t *info, void* context);
+void	sigack_hadler(int signo, siginfo_t *info, void *context);
 void	init_msg(int clt_pid, void (*handler)(int, siginfo_t*, void*));
+void	print_srv_info(int pid);
+void	print_clt_info(void);
 
 #endif

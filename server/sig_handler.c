@@ -45,7 +45,7 @@ void	store_binary(int signo)
 	}
 }
 
-void	sigusr_controler(int signo, siginfo_t *info, void* context)
+void	sigusr_controler(int signo, siginfo_t *info, void *context)
 {
 	if (g_msg.clt_pid == info->si_pid)
 	{
@@ -61,9 +61,9 @@ void	sigusr_controler(int signo, siginfo_t *info, void* context)
 	}
 }
 
-void	sigack_hadler(int signo, siginfo_t *info, void* context)
+void	sigack_hadler(int signo, siginfo_t *info, void *context)
 {
 	init_msg(info->si_pid, sigusr_controler);
-	write(1, ft_strjoin("[", ft_strjoin(ft_itoa(g_msg.clt_pid), " client] sended\n")), 1 + 7 + 17);
+	print_clt_info();
 	ft_kill(info->si_pid, SIGUSR1);
 }
