@@ -22,7 +22,7 @@ void	init_msg(int clt_pid, void (*handler)(int, siginfo_t *, void *))
 	g_msg.sa.sa_flags = SA_SIGINFO | SA_RESTART;
 	g_msg.sa.sa_sigaction = *handler;
 	sigemptyset(&g_msg.sa.sa_mask);
-	sigaction(SIGUSR1, &g_msg.sa, NLL);
+	sigaction(SIGUSR1, &g_msg.sa, NULL);
 	sigaction(SIGUSR2, &g_msg.sa, NULL);
 }
 
