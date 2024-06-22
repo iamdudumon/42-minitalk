@@ -31,17 +31,24 @@ static void	store_binary(int signo)
 
 	if (signo == SIGUSR2)
 		ch |= (1 << len);
-	len++;
-	if (len == CODE_SIZE)
+	if (++len == CODE_SIZE)
 	{
-		g_msg.buf[g_msg.len++] = ch;
-		if (g_msg.buf[g_msg.len - 1] == '\0')
+		if (g_msg.len == BUFFER_SIZE)
 		{
-			write(1, ft_strjoin(g_msg.buf, "\n"), ft_strlen(g_msg.buf) + 1);
+			write(1, g_msg.buf, g_msg.len);
+			ft_memset(g_msg.buf, 0, BUFFER_SIZE);
+			g_msg.len = 0;
+		}
+		g_msg.buf[g_msg.len] = ch;
+		if (g_msg.buf[g_msg.len] == '\0')
+		{
+			write(1, g_msg.buf, g_msg.len);
+			write(1, "\n", 1);
 			init_msg(0, sigack_hadler);
 		}
 		ch = 0;
 		len = 0;
+		g_msg.len++;
 	}
 }
 
