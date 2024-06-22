@@ -1,8 +1,18 @@
-#include "ft_client.h"
-#include <signal.h>
-#include <unistd.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   send_msg.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/22 15:53:40 by dukim             #+#    #+#             */
+/*   Updated: 2024/06/22 15:53:42 by dukim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-extern t_data	g_data;
+#include "ft_client.h"
+
+t_msg	g_msg;
 
 void	ft_kill(int pid, int signo)
 {
@@ -13,57 +23,31 @@ void	ft_kill(int pid, int signo)
 	}
 }
 
-void	ack_handler(int signo, siginfo_t *info, void* context)
+void	ack_handler(int signo, siginfo_t *info, void *context)
 {
-	if (signo != g_data.signal)
+	static int	bit = 0;
+	static char	ch;
+
+	if (bit == CODE_SIZE)
 	{
-		g_data.error = 1;
+		if (ch == '\0')
+			exit(1);
+		bit = 0;
+		g_msg.len++;
 	}
+	ch = g_msg.msg[g_msg.len];
+	if ((ch & (1 << bit)) == 0)
+		ft_kill(info->si_pid, SIGUSR1);
+	else
+		ft_kill(info->si_pid, SIGUSR2);
+	bit++;
 }
 
-void	send_ack(int pid)
+void	send_ack(int pid, char *msg)
 {
+	g_msg.msg = msg;
+	g_msg.len = 0;
 	ft_kill(pid, SIGUSR1);
-	pause();
-	// usleep(300);
-}
-
-int	send_character(int pid, char ch)
-{
-	int bit;
-
-	bit = -1;
-	g_data.error = 0;
-	while (++bit < CODE_SIZE)
-	{
-		if ((ch & (1 << bit)) == 0)
-		{
-			g_data.signal = SIGUSR1;
-			ft_kill(pid, SIGUSR1);
-		}
-		else
-		{
-			g_data.signal = SIGUSR2;
-			ft_kill(pid, SIGUSR2);
-		}
+	while (1)
 		pause();
-		// usleep(300);
-	}
-	return (g_data.error);
-}
-
-void	send_msg(int pid, char *msg)
-{
-	while (*msg != '\0')
-	{
-		// if (send_character(pid, *msg))
-		// {
-		// 	ft_printf("error~\n");
-		// 	while (send_character(pid, 21));
-		// 	continue ;
-		// }
-		send_character(pid, *msg);
-		msg++;
-	}
-	send_character(pid, '\0');
 }
