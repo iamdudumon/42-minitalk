@@ -22,14 +22,17 @@ CLT_DIR		=	clt
 
 SRV_SRC		= 	$(SRV_DIR)/main.c $(SRV_DIR)/sig_handler.c $(SRV_DIR)/utils.c
 CLT_SRC		= 	$(CLT_DIR)/main.c $(CLT_DIR)/send_msg.c
-SRV_OBJS	=	$(SRV_SRC:.c=.o)
-CLT_OBJS	=	$(CLT_SRC:.c=.o)
 
 ifdef BONUS
-	FINAL_OBJS = $(OBJS) $(LST_OBJS)
+	SRV_SRC_B = $(SRV_SRC:.c=_bonus.c)
+	CLT_SRC_B = $(CLT_SRC:.c=_bonus.c)
 else
-	FINAL_OBJS = $(OBJS)
+	SRV_SRC_B = $(SRV_SRC)
+	CLT_SRC_B = $(CLT_SRC)
 endif
+
+SRV_OBJS	=	$(SRV_SRC_B:.c=.o)
+CLT_OBJS	=	$(CLT_SRC_B:.c=.o)
 
 .PHONY:		all bonus clean fclean re
 
@@ -41,22 +44,22 @@ $(LIBFT_LIB)	:
 $(SRV_NAME)	:	$(SRV_OBJS)
 	$(CC) $(CFLAGS) $(SRV_OBJS) $(LIBFT)/$(LIBFT_LIB) -o $(SRV_NAME)
 
-$(SRV_OBJS)	:	$(SRV_SRC)
-	$(CC) $(CFLAGS) -c $(SRV_SRC)
+$(SRV_OBJS)	:	$(SRV_SRC_B)
+	$(CC) $(CFLAGS) -c $(SRV_SRC_B)
 	@mv *.o $(SRV_DIR)/
 
 $(CLT_NAME)	:	$(CLT_OBJS)
 	$(CC) $(CFLAGS) $(CLT_OBJS) $(LIBFT)/$(LIBFT_LIB) -o $(CLT_NAME)
 
-$(CLT_OBJS)	:	$(CLT_SRC)
-	$(CC) $(CFLAGS) -c $(CLT_SRC)
+$(CLT_OBJS)	:	$(CLT_SRC_B)
+	$(CC) $(CFLAGS) -c $(CLT_SRC_B)
 	@mv *.o $(CLT_DIR)/
 
 bonus:
 	@make BONUS=1 all
 
 clean:
-	@rm -f $(SRV_OBJS) $(CLT_OBJS)
+	@rm -f $(SRV_DIR)/*.o $(CLT_DIR)/*.o
 	make clean -C $(LIBFT)
 
 fclean:		clean
