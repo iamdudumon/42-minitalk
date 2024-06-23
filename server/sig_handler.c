@@ -61,7 +61,6 @@ void	srv_sig_handler(int signo, siginfo_t *info, void *context)
 	}
 	else
 		ft_kill(info->si_pid, SIGUSR2);
-
 }
 
 void	sigack_hadler(int signo, siginfo_t *info, void *context)

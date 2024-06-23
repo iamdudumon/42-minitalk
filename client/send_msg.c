@@ -65,4 +65,3 @@ void	clt_sig_handler(int signo, siginfo_t *info, void *context)
 		ft_kill(info->si_pid, SIGUSR2);
 	bit++;
 }
-
