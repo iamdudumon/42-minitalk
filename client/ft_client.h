@@ -20,11 +20,13 @@
 
 typedef struct s_msg
 {
-	char	*msg;
-	int		len;
+	char				*msg;
+	int					len;
+	struct sigaction	sa;
 }			t_msg;
 
-void	send_ack(int pid, char *msg);
+void	send_sigack(int pid, char *msg);
 void	ack_handler(int signo, siginfo_t *info, void *context);
+void	clt_sig_handler(int signo, siginfo_t *info, void *context);
 
 #endif

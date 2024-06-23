@@ -19,7 +19,7 @@ static void	ft_kill(int pid, int signo)
 {
 	if (kill(pid, signo) == -1)
 	{
-		write(1, "SIUSR Error, Non-existend Pid\n", 31);
+		write(1, "SIGUSR Error, Non-existend Pid\n", 31);
 		exit(1);
 	}
 }
@@ -52,7 +52,7 @@ static void	store_binary(int signo)
 	}
 }
 
-void	sigusr_controler(int signo, siginfo_t *info, void *context)
+void	srv_sig_handler(int signo, siginfo_t *info, void *context)
 {
 	if (g_msg.clt_pid == info->si_pid)
 	{
@@ -60,17 +60,17 @@ void	sigusr_controler(int signo, siginfo_t *info, void *context)
 		ft_kill(info->si_pid, signo);
 	}
 	else
-	{
-		if (signo == SIGUSR1)
-			ft_kill(info->si_pid, SIGUSR2);
-		else
-			ft_kill(info->si_pid, SIGUSR1);
-	}
+		ft_kill(info->si_pid, SIGUSR2);
+
 }
 
 void	sigack_hadler(int signo, siginfo_t *info, void *context)
 {
-	init_msg(info->si_pid, sigusr_controler);
-	print_clt_info();
+	if (info->si_pid == g_msg.clt_pid)
+	{
+		init_msg(info->si_pid, srv_sig_handler);
+		print_clt_info();
+	}
+	g_msg.clt_pid = info->si_pid;
 	ft_kill(info->si_pid, SIGUSR1);
 }
