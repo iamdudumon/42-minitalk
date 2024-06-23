@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_server.h"
-#include <signal.h>
 
 extern t_msg	g_msg;
 
@@ -43,7 +42,7 @@ static void	store_binary(int signo)
 		if (g_msg.buf[g_msg.len] == '\0')
 		{
 			write(1, g_msg.buf, g_msg.len);
-			write(1, "\n", 1);
+			write(1, "\n\n", 2);
 			init_msg(0, sigack_hadler);
 		}
 		ch = 0;
@@ -52,8 +51,26 @@ static void	store_binary(int signo)
 	}
 }
 
+void	sigack_hadler(int signo, siginfo_t *info, void *context)
+{
+	(void)context;
+	if (signo == SIGUSR2)
+	{
+		print_clt_info(info->si_pid, 1);
+		return ;
+	}
+	if (info->si_pid == g_msg.clt_pid)
+	{
+		print_clt_info(info->si_pid, 0);
+		init_msg(info->si_pid, srv_sig_handler);
+	}
+	g_msg.clt_pid = info->si_pid;
+	ft_kill(info->si_pid, SIGUSR1);
+}
+
 void	srv_sig_handler(int signo, siginfo_t *info, void *context)
 {
+	(void)context;
 	if (g_msg.clt_pid == info->si_pid)
 	{
 		store_binary(signo);
@@ -61,15 +78,4 @@ void	srv_sig_handler(int signo, siginfo_t *info, void *context)
 	}
 	else
 		ft_kill(info->si_pid, SIGUSR2);
-}
-
-void	sigack_hadler(int signo, siginfo_t *info, void *context)
-{
-	if (info->si_pid == g_msg.clt_pid)
-	{
-		init_msg(info->si_pid, srv_sig_handler);
-		print_clt_info();
-	}
-	g_msg.clt_pid = info->si_pid;
-	ft_kill(info->si_pid, SIGUSR1);
 }

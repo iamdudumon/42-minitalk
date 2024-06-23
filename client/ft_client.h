@@ -25,7 +25,7 @@ typedef struct s_msg
 	struct sigaction	sa;
 }			t_msg;
 
-void	send_sigack(int pid, char *msg);
+void	send_sigack(int pid);
 void	ack_handler(int signo, siginfo_t *info, void *context);
 void	clt_sig_handler(int signo, siginfo_t *info, void *context);
 

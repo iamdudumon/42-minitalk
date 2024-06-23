@@ -23,13 +23,14 @@ static void	ft_kill(int pid, int signo)
 	}
 }
 
-void	send_sigack(int pid, char *msg)
+void	send_sigack(int pid)
 {
 	ft_kill(pid, SIGUSR1);
 }
 
 void	ack_handler(int signo, siginfo_t *info, void *context)
 {
+	(void)context;
 	if (signo == SIGUSR2)
 	{
 		write(1, "Server is busy...\nRetry sending message!\n", 42);
@@ -40,7 +41,7 @@ void	ack_handler(int signo, siginfo_t *info, void *context)
 	sigemptyset(&g_msg.sa.sa_mask);
 	sigaction(SIGUSR1, &g_msg.sa, NULL);
 	sigaction(SIGUSR2, &g_msg.sa, NULL);
-	send_sigack(info->si_pid, g_msg.msg);
+	send_sigack(info->si_pid);
 }
 
 void	clt_sig_handler(int signo, siginfo_t *info, void *context)
@@ -48,11 +49,13 @@ void	clt_sig_handler(int signo, siginfo_t *info, void *context)
 	static int	bit = 0;
 	static char	ch;
 
+	(void)context;
+	(void)signo;
 	if (bit == CODE_SIZE)
 	{
 		if (ch == '\0')
 		{
-			write(1, "You've successfully sent your message.\n", 40)
+			write(1, "You've successfully sent your message.\n", 40);
 			exit(0);
 		}
 		bit = 0;

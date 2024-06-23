@@ -29,7 +29,7 @@ static void	start_sending_msg(int pid, char *msg)
 	free(print_s2);
 	g_msg.msg = msg;
 	g_msg.len = 0;
-	send_sigack(pid, msg);
+	send_sigack(pid);
 }
 
 int	main(int argc, char *argv[])

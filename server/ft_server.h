@@ -28,8 +28,9 @@ typedef struct s_msg
 }						t_msg;
 
 void	sigack_hadler(int signo, siginfo_t *info, void *context);
+void	srv_sig_handler(int signo, siginfo_t *info, void *context);
 void	init_msg(int clt_pid, void (*handler)(int, siginfo_t*, void*));
 void	print_srv_info(int pid);
-void	print_clt_info(void);
+void	print_clt_info(int clt_pid, int error);
 
 #endif
