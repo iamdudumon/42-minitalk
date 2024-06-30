@@ -20,6 +20,11 @@ static void	start_sending_msg(int pid, char *msg)
 	char	*print_s1;
 	char	*print_s2;
 
+	if (pid == 0)
+	{
+		write(1, "Wrong Pid\n", 11);
+		exit(1);
+	}
 	pids = ft_itoa(getpid());
 	print_s1 = ft_strjoin("My pid is ", pids);
 	print_s2 = ft_strjoin(print_s1, "\n");

@@ -17,8 +17,10 @@ unsigned int	ft_atoi(const char *nptr)
 	unsigned int	sum;
 
 	sum = 0;
-	while (ft_isdigit(*nptr))
+	while (*nptr != '\0')
 	{
+		if (!ft_isdigit(*nptr))
+			return (0);
 		sum = sum * 10 + (*nptr - '0');
 		nptr++;
 	}
